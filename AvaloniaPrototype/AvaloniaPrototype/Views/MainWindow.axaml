@@ -6,7 +6,7 @@
         xmlns:views="clr-namespace:AvaloniaPrototype.Views"
         mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
         x:Class="AvaloniaPrototype.Views.MainWindow"
-        Icon="/Assets/avalonia-logo.ico"
+        Icon="/Assets/well-icon.png"
         Title="AvaloniaPrototype">
         <views:MainView />
 </Window>
