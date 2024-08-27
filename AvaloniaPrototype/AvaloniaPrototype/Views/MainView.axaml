@@ -3,26 +3,74 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:vm="clr-namespace:AvaloniaPrototype.ViewModels"
-    mc:Ignorable="d" d:DesignWidth="400" d:DesignHeight="800"
+    mc:Ignorable="d" d:DesignWidth="400" d:DesignHeight="550"
     x:Class="AvaloniaPrototype.Views.MainView"
-    x:DataType="vm:MainViewModel">
+    x:DataType="vm:DesignMainViewModel">
     <Design.DataContext>
         <!-- This only sets the DataContext for the previewer in an IDE,
             to set the actual DataContext for runtime, set the DataContext property in code (look at App.axaml.cs) -->
-        <vm:MainViewModel />
+        <vm:DesignMainViewModel />
     </Design.DataContext>
 
-    <StackPanel>
-        <TextBlock Text="{Binding AquiferGreeting}" HorizontalAlignment="Center" />
-        <Image Margin="20"
-          HorizontalAlignment="Stretch"
-          Stretch="Uniform"
-          Source="/Assets/aquifer-explainer.png"/>
-        <TextBlock Text="{Binding WellGreeting}" HorizontalAlignment="Center" />
-        <Image Margin="20"
-            HorizontalAlignment="Stretch"
-            Stretch="Uniform"
-            Source="/Assets/well-logo.png"/>
-		<button>View Resource</button>
-    </StackPanel>
+    <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+        <StackPanel>
+            <TextBlock
+                Name="AquiferGreetingTextBox"
+                Text="{Binding AquiferGreeting}"
+                HorizontalAlignment="Center" />
+            <Image
+                Name="AquiferImage"
+                Margin="20"
+                HorizontalAlignment="Stretch"
+                Stretch="Uniform"
+                Source="/Assets/aquifer-explainer.png"/>
+            <TextBlock
+                Name="WellGreetingTextBox"
+                Text="{Binding WellGreeting}"
+                HorizontalAlignment="Center" />
+            <Image
+                Name="WellImage"
+                Margin="20"
+                HorizontalAlignment="Stretch"
+                Stretch="Uniform"
+                Source="/Assets/well-logo.png"/>
+            <Button
+                Name="LoadResourceButton"
+                Content="{Binding LoadResourceButtonText, Mode=OneWay}"
+                Click="LoadResourceButton_Click"
+                HorizontalAlignment="Center">
+            </Button>
+            <Grid
+                Margin="5"
+                ColumnDefinitions="100, *"
+                RowDefinitions="Auto, Auto, Auto">
+                <Label
+                    Grid.Row="0"
+                    Grid.Column="0"
+                    Name="ResourceNameLabel"
+                    Content="{Binding ResourceNameLabelText, Mode=OneWay}">
+                </Label>
+                <TextBlock
+                    Grid.Row="0"
+                    Grid.Column="1"
+                    Name="ResourceNameTextBlock"
+                    TextWrapping="Wrap"
+                    HorizontalAlignment="Stretch">
+                </TextBlock>
+                <Label
+                    Grid.Row="1"
+                    Grid.Column="0"
+                    Name="ResourceContentLabel"
+                    Content="{Binding ResourceContentLabelText, Mode=OneWay}">
+                </Label>
+                <TextBlock
+                    Grid.Row="1"
+                    Grid.Column="1"
+                    Name="ResourceContentTextBlock"
+                    TextWrapping="Wrap"
+                    HorizontalAlignment="Stretch">
+                </TextBlock>
+            </Grid>
+        </StackPanel>
+    </ScrollViewer>
 </UserControl>
