@@ -1,4 +1,5 @@
 using System;
+using System.Globalization;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Reflection;
@@ -70,6 +71,7 @@ public partial class App : Application
 
     internal static void ConfigureServices(IServiceCollection services, Settings settings)
     {
+        services.AddLocalization(options => options.ResourcesPath = "/Resources");
         services.AddSingleton(settings);
         services.AddTransient<MainViewModel>();
         services.AddSingleton<IAquiferService, AquiferService>();
@@ -83,7 +85,7 @@ public partial class App : Application
             .SetHandlerLifetime(TimeSpan.FromMinutes(5))
             .AddPolicyHandler(GetRetryPolicy());
     }
-    private static IAsyncPolicy<HttpResponseMessage> GetRetryPolicy()
+    private static AsyncPolicy<HttpResponseMessage> GetRetryPolicy()
     {
         return HttpPolicyExtensions
             .HandleTransientHttpError()

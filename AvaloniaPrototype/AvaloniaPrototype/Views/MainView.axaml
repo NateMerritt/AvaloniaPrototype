@@ -2,6 +2,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:resx="clr-namespace:AvaloniaPrototype.Resources"
     xmlns:vm="clr-namespace:AvaloniaPrototype.ViewModels"
     mc:Ignorable="d" d:DesignWidth="400" d:DesignHeight="550"
     x:Class="AvaloniaPrototype.Views.MainView"
@@ -14,9 +15,19 @@
 
     <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
         <StackPanel>
+            <ComboBox
+                Name="CultureComboBox"
+                HorizontalAlignment="Left"
+                MaxDropDownHeight="100"
+                Width="100"
+                SelectedIndex="-1"
+                SelectionChanged="CultureComboBox_SelectionChanged">
+                <ComboBoxItem>English</ComboBoxItem>
+                <ComboBoxItem>Español</ComboBoxItem>
+            </ComboBox>
             <TextBlock
                 Name="AquiferGreetingTextBox"
-                Text="{Binding AquiferGreeting}"
+                Text="{x:Static resx:MainView.AquiferGreeting}"
                 HorizontalAlignment="Center" />
             <Image
                 Name="AquiferImage"
@@ -26,7 +37,7 @@
                 Source="/Assets/aquifer-explainer.png"/>
             <TextBlock
                 Name="WellGreetingTextBox"
-                Text="{Binding WellGreeting}"
+                Text="{x:Static resx:MainView.BibleWellGreeting}"
                 HorizontalAlignment="Center" />
             <Image
                 Name="WellImage"
@@ -35,10 +46,25 @@
                 Stretch="Uniform"
                 Source="/Assets/well-logo.png"/>
             <Button
-                Name="LoadResourceButton"
-                Content="{Binding LoadResourceButtonText, Mode=OneWay}"
-                Click="LoadResourceButton_Click"
-                HorizontalAlignment="Center">
+                Name="LoadInternetResourceButton"
+                Content="{Binding LoadInternetResourceText, Mode=OneWay}"
+                HorizontalAlignment="Left"
+                IsEnabled="{Binding LoadInternetResourceIsEnabled, Mode=OneWay}"
+                Click="LoadInternetResourceButton_Click">
+            </Button>
+            <Button
+                Name="SaveLocalResourceButton"
+                Content="{Binding SaveLocalResourceText, Mode=OneWay}"
+                HorizontalAlignment="Left"
+                IsEnabled="{Binding SaveLocalResourceIsEnabled, Mode=OneWay}"
+                Click="SaveLocalResourceButton_Click">
+            </Button>
+            <Button
+                Name="LoadLocalResourceButton"
+                Content="{Binding LoadLocalResourceText, Mode=OneWay}"
+                HorizontalAlignment="Left"
+                IsEnabled="{Binding LoadLocalResourceIsEnabled, Mode=OneWay}"
+                Click="LoadLocalResourceButton_Click">
             </Button>
             <Grid
                 Margin="5"
@@ -48,27 +74,29 @@
                     Grid.Row="0"
                     Grid.Column="0"
                     Name="ResourceNameLabel"
-                    Content="{Binding ResourceNameLabelText, Mode=OneWay}">
+                    Content="{x:Static resx:MainView.ResourceName}">
                 </Label>
                 <TextBlock
                     Grid.Row="0"
                     Grid.Column="1"
                     Name="ResourceNameTextBlock"
                     TextWrapping="Wrap"
-                    HorizontalAlignment="Stretch">
+                    HorizontalAlignment="Stretch"
+                    Text="{Binding ResourceNameText, Mode=OneWay}">
                 </TextBlock>
                 <Label
                     Grid.Row="1"
                     Grid.Column="0"
                     Name="ResourceContentLabel"
-                    Content="{Binding ResourceContentLabelText, Mode=OneWay}">
+                    Content="{x:Static resx:MainView.ResourceContent}">
                 </Label>
                 <TextBlock
                     Grid.Row="1"
                     Grid.Column="1"
                     Name="ResourceContentTextBlock"
                     TextWrapping="Wrap"
-                    HorizontalAlignment="Stretch">
+                    HorizontalAlignment="Stretch"
+                    Text="{Binding ResourceContentText, Mode=OneWay}">
                 </TextBlock>
             </Grid>
         </StackPanel>

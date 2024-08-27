@@ -13,30 +13,86 @@ public partial class MainViewModel : ViewModelBase
         m_aquiferService = aquiferService;
     }
 
-    public async Task<(string Name, string Content)> GetRandomResourceContentAsync()
+    public async Task GetRandomResourceContentAsync()
     {
         var randomIndex = new Random().Next(0, 9);
+        var (name, content) = await m_aquiferService.GetResourceContentAsync(s_contentIds[randomIndex]);
+        ResourceNameText = name;
+        ResourceContentText = content;
+    }
 
-        return await m_aquiferService.GetResourceContentAsync(s_contentIds[randomIndex]);
+    public void SetState(State state)
+    {
+        switch (state)
+        {
+            case State.Ready:
+                LoadInternetResourceText = Resources.MainView.LoadInternetResource;
+                LoadInternetResourceIsEnabled = true;
+                SaveLocalResourceText = Resources.MainView.SaveLocalResource;
+                SaveLocalResourceIsEnabled = true;
+                LoadLocalResourceText = Resources.MainView.LoadLocalResource;
+                LoadLocalResourceIsEnabled = true;
+                break;
+            case State.LoadingInternetResource:
+                LoadInternetResourceText = Resources.MainView.Loading;
+                LoadInternetResourceIsEnabled = false;
+                SaveLocalResourceText = Resources.MainView.SaveLocalResource;
+                SaveLocalResourceIsEnabled = false;
+                LoadLocalResourceText = Resources.MainView.LoadLocalResource;
+                LoadLocalResourceIsEnabled = false;
+                break;
+            case State.SaveLocalResource:
+                LoadInternetResourceText = Resources.MainView.LoadInternetResource;
+                LoadInternetResourceIsEnabled = false;
+                SaveLocalResourceText = Resources.MainView.Saving;
+                SaveLocalResourceIsEnabled = false;
+                LoadLocalResourceText = Resources.MainView.LoadLocalResource;
+                LoadLocalResourceIsEnabled = false;
+                break;
+            case State.LoadLocalResource:
+                LoadInternetResourceText = Resources.MainView.LoadInternetResource;
+                LoadInternetResourceIsEnabled = false;
+                SaveLocalResourceText = Resources.MainView.SaveLocalResource;
+                SaveLocalResourceIsEnabled = false;
+                LoadLocalResourceText = Resources.MainView.Loading;
+                LoadLocalResourceIsEnabled = false;
+                break;
+            default:
+                throw new ArgumentException($"Unexpected \"{nameof(State)}\": \"{state}\".", nameof(state));
+        }
+    }
+
+    public enum State
+    {
+        Ready,
+        LoadingInternetResource,
+        SaveLocalResource,
+        LoadLocalResource,
     }
 
     [ObservableProperty]
-    private string _aquiferGreeting = "Aquifer!";
+    private bool _loadInternetResourceIsEnabled = default;
 
     [ObservableProperty]
-    private string _loadingText = "Loading...";
+    private string _loadInternetResourceText = "";
 
     [ObservableProperty]
-    private string _loadResourceButtonText = "Load Resource";
+    private bool _loadLocalResourceIsEnabled = default;
 
     [ObservableProperty]
-    private string _resourceContentLabelText = "Content:";
+    private string _loadLocalResourceText = "";
 
     [ObservableProperty]
-    private string _resourceNameLabelText = "Name:";
+    private string _resourceContentText = "";
 
     [ObservableProperty]
-    private string _wellGreeting = "Bible Well!";
+    private string _resourceNameText = "";
+
+    [ObservableProperty]
+    private bool _saveLocalResourceIsEnabled = default;
+
+    [ObservableProperty]
+    private string _saveLocalResourceText = "";
 
     private static readonly IReadOnlyList<int> s_contentIds =
     [
